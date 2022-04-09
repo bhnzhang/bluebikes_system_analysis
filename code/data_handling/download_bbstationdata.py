@@ -53,20 +53,22 @@ def grab_station_data(sc, refresh_t, save_path):
 
 # main -------------------
 
-# set refresh time in seconds
-refresh_t = 5*60 
+if __name__ == '__main__':
 
-# set directory to save data
-# save_path = 'G:\\My Drive\\Personal projects\\bluebikes\\station data'
-save_path = 'D:\\Google Drive\\Personal projects\\bluebikes\\station data'
+    # set refresh time in seconds
+    refresh_t = 5*60 
 
-# make scheduler object
-s = sched.scheduler(time.time, time.sleep)
+    # set directory to save data
+    # save_path = 'G:\\My Drive\\Personal projects\\bluebikes\\station data'
+    save_path = 'D:\\Google Drive\\Personal projects\\bluebikes\\station data'
 
-# schedule the first execution
-s.enter(0, 1, grab_station_data, (s,refresh_t,save_path))
+    # make scheduler object
+    s = sched.scheduler(time.time, time.sleep)
 
-# run continuously
-s.run()
+    # schedule the first execution
+    s.enter(0, 1, grab_station_data, (s,refresh_t,save_path))
+
+    # run continuously
+    s.run()
 
 

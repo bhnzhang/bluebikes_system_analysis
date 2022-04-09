@@ -1,5 +1,18 @@
-# load all json information
-# save all information to a csv
+"""
+load all json information
+save all information to a csv
+"""
+
+# add project base path to system path
+import os
+import sys
+
+# need to append project root before importing other in package dependencies
+PROJECT_ROOT = os.path.abspath(os.path.join(
+                  os.path.dirname(__file__), 
+                  os.pardir)
+)
+sys.path.append(PROJECT_ROOT)
 
 # dependencies -------------------
 
@@ -30,27 +43,30 @@ import pandas as pd
 import pprint
 
 # remove unneeded columns
-from remove_unneeded_columns import remove_unneeded_columns
+from remove_unneeded_columns import f_remove_unneeded_columns
+
+# for getting station info
+from data_loading_methods import load_station_info
 
 # ------------------------
 # function definitions
 
 def load_jsons_savetocsv(jsonpath): 
-    """
-    inputs:
-        jsonpath
-            type: str
-            desc: path to load jsons from and save csv file to
-    """
+	"""
+	inputs:
+	jsonpath
+	    type: str
+	    desc: path to load jsons from and save csv file to
+	"""
 
-    # get all json filenames
-    files = [ f for f in listdir(basepath) if isfile(join(basepath, f)) and 'json' in f ]
+	# get all json filenames
+	files = [ f for f in listdir(basepath) if isfile(join(basepath, f)) and 'json' in f ]
 
-    # init list of dataframes where each DF contains data from one json file
+	# init list of dataframes where each DF contains data from one json file
 	alldata_df_list = []
 
 	# loop through each json file, add to a list of dataframe objects
-	print('Loading ' + str(len(files) ' JSON files...'))
+	print('Loading ' + str(len(files)) + ' JSON files...')
 	for fname, i_file in zip( files, range(len(files)) ):
 
 		# load the json as a list of station dictionaries
@@ -60,7 +76,7 @@ def load_jsons_savetocsv(jsonpath):
 		with open( basepath + os.sep + files[0] ) as f_opened:
 		    this_entry = json.load(f_opened)
 
-	    # grab the station information
+		# grab the station information
 		allstation_data = this_entry['data']['stations']
 
 		# convert to dataframe and append to dataframe list
@@ -79,19 +95,18 @@ def load_jsons_savetocsv(jsonpath):
 	# convert the time to datetime format
 	alldata_df['last_reported'] = pd.to_datetime( alldata_df['last_reported'], unit='s' )
 
-	alldata_df.set_index(['last_reported'], inplace=True) # index by date
+	# alldata_df.set_index(['last_reported'], inplace=True) # index by date
 
 	# now add columns for the station information data
 
 	# load station information data
-	with urllib.request.urlopen("https://gbfs.bluebikes.com/gbfs/en/station_information.json") as url:
-    station_info = json.loads(url.read().decode())['data']['stations']
+	station_info_df = load_station_info()
 
-    # marge the data and station info DFs
+	# marge the data and station info DFs
 	alldata_merged = alldata_df.merge( station_info_df, how='left', on='station_id')
 
 	# remove unneeded columns
-	alldata_merged = remove_unneeded_columns( alldata_merged )
+	alldata_merged = f_remove_unneeded_columns( alldata_merged )
 
 	# save to csv
 	alldata_merged.to_csv(basepath + os.sep + 'alldata.csv')
@@ -108,11 +123,14 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # main -------------------
 
-# pick path to load json files from
-basepath 	= 'U:\\bluebikes\\station data cropped'
+if __name__ == '__main__':
+	
+	# pick path to load json files from
+	# basepath = 'U:\\bluebikes\\station data cropped'
+	basepath = 'U:\\bluebikes\\station data 2022 03'
 
-# load the jsons and save to csv
-load_jsons_savetocsv(basepath)
+	# load the jsons and save to csv
+	load_jsons_savetocsv(basepath)
 
 # # get all json filenames
 # basepath 	= 'U:\\bluebikes\\station data cropped' # subset of data

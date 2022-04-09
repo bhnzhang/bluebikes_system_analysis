@@ -35,7 +35,7 @@ import pprint
 # function defs
 
 # remove unneeded columns
-def remove_unneeded_columns( df ):
+def f_remove_unneeded_columns( df ):
 	"""
 	input:
 		df
@@ -49,29 +49,31 @@ def remove_unneeded_columns( df ):
 				  	'legacy_id_y', 'eightd_station_services', 'short_name', 'station_type',
 				  	'rental_methods', 'has_kiosk', 'eightd_has_key_dispenser']
 
-	return alldata_df.drop( columns_to_remove, axis=1, errors='ignore')
+	return df.drop( columns_to_remove, axis=1, errors='ignore')
 # end remove_unneeded_columns()
 
 # main -------------------
 
-# file to load
-# filetoload = 'U:\\bluebikes\\station data 220403 1319\\alldata.csv'
-filetoload = 'U:\\bluebikes\\station data cropped\\alldata.csv'
+if __name__ == '__main__':
 
-# read csv into df
-alldata_df = pd.read_csv(filetoload, index_col=0)
+	# file to load
+	# filetoload = 'U:\\bluebikes\\station data 220403 1319\\alldata.csv'
+	filetoload = 'U:\\bluebikes\\station data cropped\\alldata.csv'
 
-# print out df before removing columns
-print(alldata_df.head(5))
-print(alldata_df.columns)
+	# read csv into df
+	alldata_df = pd.read_csv(filetoload, index_col=0)
+
+	# print out df before removing columns
+	print(alldata_df.head(5))
+	print(alldata_df.columns)
 
 
-# remove unneeded columns
-alldata_df = remove_unneeded_columns(alldata_df)
+	# remove unneeded columns
+	alldata_df = remove_unneeded_columns(alldata_df)
 
-# print out df after
-print(alldata_df)
-print(alldata_df.columns)
+	# print out df after
+	print(alldata_df)
+	print(alldata_df.columns)
 
-# save
-alldata_df.to_csv(filetoload, index=False)
+	# save
+	alldata_df.to_csv(filetoload, index=False)
