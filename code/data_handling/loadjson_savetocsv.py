@@ -51,12 +51,15 @@ from data_loading_methods import load_station_info
 # ------------------------
 # function definitions
 
-def load_jsons_savetocsv(jsonpath): 
+def load_jsons_savetocsv(jsonpath, save_fname): 
 	"""
 	inputs:
 	jsonpath
 	    type: str
 	    desc: path to load jsons from and save csv file to
+    save_fname
+    	type: str
+		desc: name of file to save to
 	"""
 
 	# get all json filenames
@@ -93,7 +96,7 @@ def load_jsons_savetocsv(jsonpath):
 	alldata_df = pd.concat( alldata_df_list )
 
 	# convert the time to datetime format
-	alldata_df['last_reported'] = pd.to_datetime( alldata_df['last_reported'], unit='s' )
+	# alldata_df['last_reported'] = pd.to_datetime( alldata_df['last_reported'], unit='s' )
 
 	# alldata_df.set_index(['last_reported'], inplace=True) # index by date
 
@@ -109,7 +112,8 @@ def load_jsons_savetocsv(jsonpath):
 	alldata_merged = f_remove_unneeded_columns( alldata_merged )
 
 	# save to csv
-	alldata_merged.to_csv(basepath + os.sep + 'alldata.csv')
+	print('saving to CSV...')
+	alldata_merged.to_csv(basepath + os.sep + save_fname)
 	print('CSV file saved')
 
 # end load_jsons_savetocsv
@@ -124,13 +128,14 @@ pp = pprint.PrettyPrinter(indent=4)
 # main -------------------
 
 if __name__ == '__main__':
-	
+
 	# pick path to load json files from
 	# basepath = 'U:\\bluebikes\\station data cropped'
 	basepath = 'U:\\bluebikes\\station data 2022 03'
+	save_fname = 'alldata.csv'
 
 	# load the jsons and save to csv
-	load_jsons_savetocsv(basepath)
+	load_jsons_savetocsv(basepath, save_fname)
 
 # # get all json filenames
 # basepath 	= 'U:\\bluebikes\\station data cropped' # subset of data
