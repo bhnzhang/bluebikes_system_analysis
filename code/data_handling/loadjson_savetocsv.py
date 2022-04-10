@@ -46,7 +46,7 @@ import pprint
 from remove_unneeded_columns import f_remove_unneeded_columns
 
 # for getting station info
-from data_loading_methods import load_station_info
+from data_loading_methods import *
 
 # ------------------------
 # function definitions
@@ -62,38 +62,39 @@ def load_jsons_savetocsv(jsonpath, save_fname):
 		desc: name of file to save to
 	"""
 
-	# get all json filenames
-	files = [ f for f in listdir(basepath) if isfile(join(basepath, f)) and 'json' in f ]
+	# # get all json filenames
+	# files = [ f for f in listdir(basepath) if isfile(join(basepath, f)) and 'json' in f ]
 
-	# init list of dataframes where each DF contains data from one json file
-	alldata_df_list = []
+	# # init list of dataframes where each DF contains data from one json file
+	# alldata_df_list = []
 
-	# loop through each json file, add to a list of dataframe objects
-	print('Loading ' + str(len(files)) + ' JSON files...')
-	for fname, i_file in zip( files, range(len(files)) ):
+	# # loop through each json file, add to a list of dataframe objects
+	# print('Loading ' + str(len(files)) + ' JSON files...')
+	# for fname, i_file in zip( files, range(len(files)) ):
 
-		# load the json as a list of station dictionaries
-		# then convert each dictionary to a dataframe
+	# 	# load the json as a list of station dictionaries
+	# 	# then convert each dictionary to a dataframe
 
-		# load json as dictionary
-		with open( basepath + os.sep + files[0] ) as f_opened:
-		    this_entry = json.load(f_opened)
+	# 	# load json as dictionary
+	# 	with open( basepath + os.sep + files[0] ) as f_opened:
+	# 	    this_entry = json.load(f_opened)
 
-		# grab the station information
-		allstation_data = this_entry['data']['stations']
+	# 	# grab the station information
+	# 	allstation_data = this_entry['data']['stations']
 
-		# convert to dataframe and append to dataframe list
-		alldata_df_list.append( pd.DataFrame(allstation_data) )
+	# 	# convert to dataframe and append to dataframe list
+	# 	alldata_df_list.append( pd.DataFrame(allstation_data) )
 
-		# display when we've loaded 100 files
-		if i_file % 100 == 99:
-			print( 'loaded file ' + str(i_file) + ' of ' + str(len(files)) )
+	# 	# display when we've loaded 100 files
+	# 	if i_file % 100 == 99:
+	# 		print( 'loaded file ' + str(i_file) + ' of ' + str(len(files)) )
 
-	# end for fname...
-	print('done loading.')
+	# # end for fname...
+	# print('done loading.')
 
-	# concatenate all the dataframes into one
-	alldata_df = pd.concat( alldata_df_list )
+	# # concatenate all the dataframes into one
+	# alldata_df = pd.concat( alldata_df_list )
+	alldata_df = load_jsons_toDF(jsonpath)
 
 	# convert the time to datetime format
 	# alldata_df['last_reported'] = pd.to_datetime( alldata_df['last_reported'], unit='s' )
@@ -130,9 +131,9 @@ pp = pprint.PrettyPrinter(indent=4)
 if __name__ == '__main__':
 
 	# pick path to load json files from
-	# basepath = 'U:\\bluebikes\\station data cropped'
-	basepath = 'U:\\bluebikes\\station data 2022 03'
-	save_fname = 'alldata.csv'
+	basepath = 'U:\\bluebikes\\station data cropped'
+	# basepath = 'U:\\bluebikes\\station data 2022 03'
+	save_fname = 'alldata2.csv'
 
 	# load the jsons and save to csv
 	load_jsons_savetocsv(basepath, save_fname)
