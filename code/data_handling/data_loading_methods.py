@@ -63,7 +63,7 @@ def load_jsons_toDF( jsonpath ):
 		# then convert each dictionary to a dataframe
 
 		# load json as dictionary
-		with open( jsonpath + os.sep + files[0] ) as f_opened:
+		with open( jsonpath + os.sep + files[i_file] ) as f_opened:
 		    this_entry = json.load(f_opened)
 
 		# grab the station information

@@ -131,9 +131,9 @@ pp = pprint.PrettyPrinter(indent=4)
 if __name__ == '__main__':
 
 	# pick path to load json files from
-	basepath = 'U:\\bluebikes\\station data cropped'
-	# basepath = 'U:\\bluebikes\\station data 2022 03'
-	save_fname = 'alldata2.csv'
+	# basepath = 'U:\\bluebikes\\station data cropped'
+	basepath = 'U:\\bluebikes\\station data 2022 03'
+	save_fname = 'alldata.csv'
 
 	# load the jsons and save to csv
 	load_jsons_savetocsv(basepath, save_fname)

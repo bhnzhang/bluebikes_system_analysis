@@ -55,11 +55,15 @@ if __name__ == '__main__':
 	# load csv
 	# file to load
 	# filetoload = 'U:\\bluebikes\\station data 220403 1319\\alldata.csv'
-	# filetoload = 'U:\\bluebikes\\station data cropped\\alldata.csv'
+	# filetoload = 'U:\\bluebikes\\station data cropped\\alldata2.csv'
 	filetoload = 'U:\\bluebikes\\station data 2022 03\\alldata.csv'
 
 	# read csv into df
 	alldata_df = pd.read_csv(filetoload, index_col=0)
+
+	# convert the time to datetime format
+	alldata_df['last_reported'] = pd.to_datetime( alldata_df['last_reported'], unit='s' )
+	alldata_df.set_index('last_reported', inplace=True)
 
 	# calculate capacity ratio and add that as a column
 	alldata_df['capacity_ratio'] = alldata_df['num_bikes_available']/alldata_df['capacity']
@@ -71,12 +75,66 @@ if __name__ == '__main__':
 	data_avg_by_id = alldata_df.groupby(['station_id']).mean()
 	data_std_by_id = alldata_df.groupby(['station_id']).std()
 
-	# print(alldata_df)
-	print(alldata_df.groupby(['station_id']).mean())
-
 	# plot avg and std
 	plt.scatter( data_avg_by_id.index, data_avg_by_id['capacity_ratio'] )
 	plt.scatter( data_std_by_id.index, data_std_by_id['capacity_ratio'] )
 	# data_avg_by_id.plot.scatter(y='capacity_ratio')
 	# data_std_by_id.plot.scatter(y='capacity_ratio')
 	plt.show()
+
+	# data_grouped_by_id = alldata_df.groupby(['station_id'])
+
+	# plot all the data on one plot dont do this
+	# data_grouped_by_id['capacity_ratio'].plot(legend=True)
+
+	# another way to do it by just looking at capacity ratio data
+
+	# calculate mean and average vs. station
+	# data_grouped_capacityratio = data_grouped_by_id['capacity_ratio']
+	# data_avged  = data_grouped_capacityratio.mean()
+	# data_std 	= data_grouped_capacityratio.std()
+
+	# # debugging
+	# # print(alldata_df)
+	# print(data_grouped_capacityratio)
+	# print(data_avged)
+	# print(data_std)
+	# print(data_grouped_by_id.size())
+
+	# plot avg and std
+	# data_avged.plot()
+	# data_std.plot()
+
+	
+	# plot capacity over time for a station
+	station_id = 66
+	data_chosenstation = alldata_df.loc[alldata_df['station_id'] == station_id]
+
+	print(data_chosenstation)
+
+	# set datetime to be index
+	# data_chosenstation.set_index( 'last_reported', inplace=True )
+	# data_chosenstation['capacity_ratio'].plot()
+	# plt.show()
+
+	# # pivot table on station id
+	# pivot_table_test = pd.pivot_table( alldata_df.reset_index(),
+	# 						index='last_reported', columns='station_id', values='capacity_ratio')
+	# print(pivot_table_test)
+
+	# pivot_table_test[3].plot()
+	# plt.show()
+
+	# get a specific group
+	data_group_station66 = data_grouped_capacityratio.get_group(66)
+	print(data_group_station66)
+
+	
+
+	# # testing std function
+	# df = pd.DataFrame({'person_id': [0, 1, 2, 3],
+	# 					'age': [21, 25, 62, 43],
+	# 					'height': [1.61, 1.87, 1.49, 2.01]}
+	# 					).set_index('person_id')
+
+	# print(df.std(ddof=0))
