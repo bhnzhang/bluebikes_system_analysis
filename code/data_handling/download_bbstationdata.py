@@ -46,7 +46,7 @@ def grab_station_data(sc, refresh_t, save_path):
     print("Saving data for time stamp " + datetime_str)
     
     # schedule the next execution
-    s.enter(refresh_t, 1, grab_station_data, (sc,))
+    sc.enter(refresh_t, 1, grab_station_data, (sc,refresh_t,save_path))
 
 # end def grab_station_data()
 
