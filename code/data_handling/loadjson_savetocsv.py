@@ -114,8 +114,11 @@ def load_jsons_savetocsv(jsonpath, save_fname):
 
 	# save to csv
 	print('saving to CSV...')
-	alldata_merged.to_csv(basepath + os.sep + save_fname)
+	alldata_merged.to_csv(jsonpath + os.sep + save_fname)
 	print('CSV file saved')
+    
+    # return df if you want it
+	return alldata_merged
 
 # end load_jsons_savetocsv
 
