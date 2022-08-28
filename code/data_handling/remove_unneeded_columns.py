@@ -47,7 +47,8 @@ def f_remove_unneeded_columns( df ):
 	columns_to_remove = [ 'num_ebikes_available', 'eightd_has_available_keys', 
 				  	'legacy_id_x', 'external_id', 'electric_bike_surcharge_waiver',
 				  	'legacy_id_y', 'eightd_station_services', 'short_name', 'station_type',
-				  	'rental_methods', 'has_kiosk', 'eightd_has_key_dispenser']
+				  	'rental_methods', 'has_kiosk', 'eightd_has_key_dispenser', 'eightd_active_station_services', 
+				  	'valet', 'capacity' ]
 
 	return df.drop( columns_to_remove, axis=1, errors='ignore')
 # end remove_unneeded_columns()

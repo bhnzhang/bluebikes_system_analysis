@@ -112,6 +112,12 @@ def load_jsons_savetocsv(jsonpath, save_fname):
 	# remove unneeded columns
 	alldata_merged = f_remove_unneeded_columns( alldata_merged )
 
+	# calculate total capacity
+	alldata_merged['total_capacity'] = alldata_merged['num_bikes_available'] + \
+										alldata_merged['num_bikes_disabled'] + \
+										alldata_merged['num_docks_available'] + \
+										alldata_merged['num_docks_disabled']
+
 	# save to csv
 	print('saving to CSV...')
 	alldata_merged.to_csv(jsonpath + os.sep + save_fname)
