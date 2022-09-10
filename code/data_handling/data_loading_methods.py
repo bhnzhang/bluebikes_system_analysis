@@ -22,9 +22,12 @@ import os
 from os import listdir
 from os.path import isfile, join, isdir
 
+# useful crs constants
+crs_lonlat = 'EPSG:4269'
+crs_cartesian_feet = 'EPSG:2263'
+
 # ----------------------------
 # function defs
-
 
 def load_station_info():
 	"""
@@ -180,3 +183,16 @@ def merge_geo_pop_data( tractdata, popdata, citylimits ):
 	mergeddata = mergeddata.loc[ mergeddata['population'] > pop_thresh ]
 
 	return mergeddata
+
+
+# load boston zoning subdistrict data
+def load_boston_zoning_data():
+	# loading zoning subdistrict data
+	zoningfile = r'C:\Users\beezy\git\bluebikes_system_analysis\data\city of boston datasets\Boston_Zoning_Subdistricts.zip'
+	
+	zoningdata = geopandas.read_file(zoningfile, crs=crs_lonlat)
+	zoningdata = zoningdata.to_crs(crs_lonlat)
+	zoningdata = zoningdata.rename(columns={'SUBDISTRIC':'Zone type'}) # renaming for clarity
+	zoningdata = zoningdata.drop_duplicates() # remove any duplicate entries
+
+	return zoningdata
