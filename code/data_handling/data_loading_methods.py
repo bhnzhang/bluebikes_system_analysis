@@ -94,7 +94,7 @@ def load_jsons_toDF( jsonpath ):
 # function to load massachussetts city limits data
 def load_MA_citylimits():
 	# load the city limits data
-	shapefile = r"C:\Users\beezy\git\bluebikes_system_analysis\data\state of mass datasets\townssurvey_shp.zip!"
+	shapefile = r"..\..\data\state of mass datasets\townssurvey_shp.zip!"
 	dataset_name = "TOWNSSURVEY_POLYM.shp" # this one keeps one area per city. i think this is what i want to use
 	citylimits = geopandas.read_file(shapefile + dataset_name, crs='EPSG:4269')
 
@@ -114,12 +114,12 @@ def load_census_tractdata():
 	""" Loads 2020 census tract geography data """
 
 	# path to database
-	zipfile_base =  "zip://C:\\Users\\beezy\\git\\bluebikes_system_analysis\\data\\census data\\tl_2020_25_all_mass_shapefile.zip!"
+	zipfile_base =  r"..\..\data\census data\tl_2020_25_all_mass_shapefile.zip!"
 	database_name = 'tl_2020_25_tract20.shp'
 	zipfile = zipfile_base + database_name
 
 	# load
-	tract_shapefile = r'C:\Users\beezy\git\bluebikes_system_analysis\data\census data\tl_2020_25_all_mass_shapefile\tl_2020_25_tract20.shp'
+	tract_shapefile = r'..\..\data\census data\tl_2020_25_all_mass_shapefile\tl_2020_25_tract20.shp'
 	geodata = geopandas.read_file(tract_shapefile)
 
 	# keep only tracts in counties around boston
@@ -149,7 +149,7 @@ def load_census_tractdata():
 def load_census_popdata():
 	""" load 2020 census population data for massachussetts by tract """
 	# all of mass, by tract
-	pop_datafile = r'C:\Users\beezy\git\bluebikes_system_analysis\data\census data\DECENNIALPL2020.P1_2022-08-29T095602 mass data per census tracts\DECENNIALPL2020.P1-Data.csv'
+	pop_datafile = r'..\..\data\census data\DECENNIALPL2020.P1_2022-08-29T095602 mass data per census tracts\DECENNIALPL2020.P1-Data.csv'
 
 	popdata = pd.read_csv(pop_datafile, skiprows=[1], header=0, usecols=['GEO_ID','P1_001N'])
 
@@ -188,7 +188,7 @@ def merge_geo_pop_data( tractdata, popdata, citylimits ):
 # load boston zoning subdistrict data
 def load_boston_zoning_data():
 	# loading zoning subdistrict data
-	zoningfile = r'C:\Users\beezy\git\bluebikes_system_analysis\data\city of boston datasets\Boston_Zoning_Subdistricts.zip'
+	zoningfile = r'..\..\data\city of boston datasets\Boston_Zoning_Subdistricts.zip'
 	
 	zoningdata = geopandas.read_file(zoningfile, crs=crs_lonlat)
 	zoningdata = zoningdata.to_crs(crs_lonlat)
